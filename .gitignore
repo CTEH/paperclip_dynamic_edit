@@ -1,0 +1,36 @@
+*.rbc
+*.sassc
+.sass-cache
+capybara-*.html
+.rspec
+/log
+/tmp
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/public/system
+/public/assets
+/coverage/
+/spec/tmp
+**.orig
+rerun.txt
+pickle-email-*.html
+.project
+config/initializers/secret_token.rb
+config/secrets.yml
+config/database.yml
+/tmp
+npm-debug.log
+poor_log.txt
+
+## Environment normalisation:
+/.bundle
+/vendor/bundle
+
+# these should all be checked in to normalise the environment:
+# Gemfile.lock, .ruby-version, .ruby-gemset
+
+# unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
+.rvmrc
+
+# Despite what JetBrains says, RubyMine .idea can't be committed with our workflow
+/.idea
