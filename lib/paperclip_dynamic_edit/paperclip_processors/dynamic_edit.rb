@@ -3,8 +3,9 @@ module Paperclip
   class DynamicEdit < Paperclip::Processor
     def initialize file, options = {}, attachment = nil
       super
-      @format = File.extname(@file.path)
-      @basename = File.basename(@file.path, @format)
+      @format = options[:format]
+      @current_format = File.extname(@file.path)
+      @basename = File.basename(@file.path, @current_format)
     end
 
     def dynamic_edit_transformations
@@ -16,13 +17,15 @@ module Paperclip
     end
 
     def make(*args)
-      return @file unless dynamic_edit_transformations.present?
+      filename = [@basename, @format ? ".#{@format}" : ""].join
+      dst = TempfileFactory.new.generate(filename)
 
-      dst = Tempfile.new([@basename,@format])
-      dst.binmode
-
-      parameters = ":source #{format_transformations} :dest"
-      Paperclip.run('convert', parameters, :source => File.expand_path(@file.path), :dest => File.expand_path(dst.path))
+      if dynamic_edit_transformations.present?
+        parameters = ":source #{format_transformations} :dest"
+        Paperclip.run('convert', parameters, :source => File.expand_path(@file.path), :dest => File.expand_path(dst.path))
+      else
+        FileUtils.cp(File.expand_path(@file.path), File.expand_path(dst.path))
+      end
 
       dst
     end
